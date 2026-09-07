@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>client-custom-logs | راهنمای جامع</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <h1 id="mainTitle">📦 client-custom-logs</h1>
+            <p class="subtitle" id="subtitle">یک ماد سبک وزن برای فابریک که لاگ‌های اختصاصی را بدون تأثیر بر لاگ اصلی ماینکرفت نمایش می‌دهد.</p>
+            
+            <!-- نشانگر زبان -->
+            <div class="lang-badge" id="langBadge">
+                <span id="flagIcon">🇮🇷</span> <span id="langName">فارسی</span> <span id="dirLabel">(راست‌چین)</span>
+            </div>
+
+            <div class="badges">
+                <span class="badge">Fabric</span>
+                <span class="badge">Minecraft</span>
+                <span class="badge">Log4j2</span>
+                <span class="badge">Java</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- ویژگی‌ها -->
+        <section class="features">
+            <h2 id="featuresTitle">✨ ویژگی‌های کلیدی</h2>
+            <ul class="feature-list">
+                <li id="feature1">📝 قالب لاگ‌های سفارشی برای ماد شما</li>
+                <li id="feature2">🖥️ نمایش جداگانه در کنسول ماینکرفت</li>
+                <li id="feature3">🔒 قالب اصلی لاگ ماینکرفت بدون تغییر می‌ماند</li>
+                <li id="feature4">📁 بدون ایجاد فایل لاگ جدید برای latest.log</li>
+                <li id="feature5">⚙️ تنظیمات Log4j2 از منابع ماد بارگذاری می‌شود</li>
+                <li id="feature6">🧩 API ساده برای نوشتن لاگ‌های سفارشی</li>
+            </ul>
+        </section>
+
+        <!-- نحوه کار -->
+        <section class="how-it-works">
+            <h2 id="howTitle">⚙️ نحوه کار</h2>
+            <p id="howDesc1">ماد یک لاگر اختصاصی Log4j2 با نام <code>yourid</code> ایجاد می‌کند.</p>
+            <div class="code-block" data-lang="java">
+                <button class="copy-btn" onclick="copyCode(this)">📋 کپی</button>
+                <pre><code>public static final String MOD_ID = "yourid";
+public static final Logger LOGGER = LogManager.getLogger(MOD_ID);</code></pre>
+            </div>
+            <p id="howDesc2">سپس می‌توانید پیام‌ها را به این صورت بنویسید:</p>
+            <div class="code-block" data-lang="java">
+                <button class="copy-btn" onclick="copyCode(this)">📋 کپی</button>
+                <pre><code>LOGGER.info("Loading Mod...");
+LOGGER.warn("This is a warning.");
+LOGGER.error("Something went wrong.");</code></pre>
+            </div>
+            <p id="howDesc3">پیام‌های سفارشی با فرمت زیر نمایش داده می‌شوند:</p>
+            <div class="console-output">
+                <div>[15:20:10] [Custom Format/INFO]: Loading Mod...</div>
+                <div>[15:20:11] [Custom Format/WARN]: This is a warning.</div>
+                <div>[15:20:12] [Custom Format/ERROR]: Something went wrong.</div>
+            </div>
+            <p id="howDesc4">در همین حال، لاگ‌های معمولی ماینکرفت به فرمت پیش‌فرض خود ادامه می‌دهند:</p>
+            <div class="console-output default">
+                <div>[15:20:10] [Render thread/INFO]: Minecraft message</div>
+            </div>
+        </section>
+
+        <!-- تنظیمات Log4j2 -->
+        <section class="config">
+            <h2 id="configTitle">📂 تنظیمات Log4j2</h2>
+            <p id="configDesc1">ماد فایل تنظیمات خود را از مسیر زیر بارگذاری می‌کند:</p>
+            <div class="code-block" data-lang="text">
+                <button class="copy-btn" onclick="copyCode(this)">📋 کپی</button>
+                <pre><code>src/main/resources/logs/log4j2.xml</code></pre>
+            </div>
+            <p id="configDesc2">لاگر سفارشی به این شکل تعریف می‌شود:</p>
+            <div class="code-block" data-lang="xml">
+                <button class="copy-btn" onclick="copyCode(this)">📋 کپی</button>
+                <pre><code>&lt;Logger name="yourid" level="info" additivity="false"&gt;
+    &lt;AppenderRef ref="youridConsole"/&gt;
+&lt;/Logger&gt;</code></pre>
+            </div>
+            <p id="configDesc3">گزینه <code>additivity="false"</code> از چاپ دوباره پیام‌ها جلوگیری می‌کند.</p>
+            <p id="configDesc4">فرمت کنسول سفارشی:</p>
+            <div class="code-block" data-lang="xml">
+                <button class="copy-btn" onclick="copyCode(this)">📋 کپی</button>
+                <pre><code>&lt;Console name="youridConsole" target="SYSTEM_OUT"&gt;
+    &lt;PatternLayout pattern="[%d{HH:mm:ss}] [Custom Format/%level]: %msg{nolookups}%n" /&gt;
+&lt;/Console&gt;</code></pre>
+            </div>
+        </section>
+
+        <!-- فایل لاگ ماینکرفت -->
+        <section class="minecraft-log">
+            <h2 id="minecraftLogTitle">📄 فایل لاگ ماینکرفت</h2>
+            <p id="minecraftLogDesc">فایل لاگ اصلی ماینکرفت همچنان مسئول <code>logs/latest.log</code> است. ماد ما فایل جدیدی ایجاد نمی‌کند و از تداخل با فایل لاگ اصلی جلوگیری می‌کند.</p>
+        </section>
+
+        <!-- استفاده -->
+        <section class="usage">
+            <h2 id="usageTitle">🧑‍💻 نحوه استفاده</h2>
+            <p id="usageDesc1">یک لاگر در کلاس اصلی ماد خود ایجاد کنید:</p>
+            <div class="code-block" data-lang="java">
+                <button class="copy-btn" onclick="copyCode(this)">📋 کپی</button>
+                <pre><code>package com.mymod;
+
+import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.util.Identifier;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+
+public class MyMod implements ClientModInitializer {
+    public static final String MOD_ID = "mymod";
+    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
+
+    public static Identifier id(String path) {
+        return new Identifier(MOD_ID, path);
+    }
+
+    @Override
+    public void onInitializeClient() {
+        try {
+            var configUrl = getClass().getResource("/logs/log4j2.xml");
+
+            if (configUrl != null) {
+                LoggerContext context = (LoggerContext) LogManager.getContext(false);
+                context.setConfigLocation(configUrl.toURI());
+                context.reconfigure();      
+                LOGGER.info("Loading Mod...");
+            } else {
+                LOGGER.error("[Custom Format] Could not find log4j2.xml");
+            }
+        } catch (Exception e) {
+            LOGGER.error("[Custom Format] Failed to load log4j2.xml: " + e.getMessage());
+            e.printStackTrace();
+        }
+        LOGGER.info("Hello from my mod!");
+    }
+}</code></pre>
+            </div>
+            <p id="usageDesc2">خروجی نهایی:</p>
+            <div class="console-output">
+                <div>[15:20:09] [Custom Format/INFO]: Loading Mod...</div>
+                <div>[15:20:10] [Custom Format/INFO]: Hello from my mod!</div>
+            </div>
+        </section>
+
+        <!-- نیازمندی‌ها -->
+        <section class="requirements">
+            <h2 id="requirementsTitle">📋 نیازمندی‌ها</h2>
+            <ul>
+                <li id="req1">نسخه جاوا ادیشن ماینکرفت</li>
+                <li id="req2">Fabric Loader</li>
+                <li id="req3">Fabric API</li>
+                <li id="req4">نسخه جاوا سازگار با نسخه ماینکرفت شما</li>
+            </ul>
+        </section>
+
+        <!-- ساختار پروژه -->
+        <section class="project-structure">
+            <h2 id="structureTitle">📁 ساختار پروژه</h2>
+            <div class="code-block" data-lang="text">
+                <button class="copy-btn" onclick="copyCode(this)">📋 کپی</button>
+                <pre><code>src/
+└── main/
+    ├── java/
+    │   └── com/
+    │       └── test/
+    │           └── Initlogs.java
+    │
+    └── resources/
+        └── logs/
+            └── log4j2.xml</code></pre>
+            </div>
+        </section>
+
+        <!-- چرا این ماد -->
+        <section class="why-use">
+            <h2 id="whyTitle">❓ چرا از این ماد استفاده کنیم؟</h2>
+            <p id="whyDesc1">لاگر پیش‌فرض ماینکرفت برای پیام‌های عمومی مفید است، اما مادهای بزرگ می‌توانند خروجی زیادی تولید کنند. این ماد قالبی اختصاصی برای پیام‌های شما فراهم می‌کند تا تشخیص آنها آسان‌تر باشد:</p>
+            <div class="console-output">
+                <div>[Custom Format/INFO]</div>
+                <div>[Custom Format/WARN]</div>
+                <div>[Custom Format/ERROR]</div>
+            </div>
+            <p id="whyDesc2">این ویژگی مخصوصاً هنگام توسعه یا دیباگ مادهای فابریک بسیار مفید است.</p>
+        </section>
+
+        <!-- لایسنس -->
+        <section class="license">
+            <h2 id="licenseTitle">📜 لایسنس</h2>
+            <p id="licenseDesc">این پروژه به عنوان یک مثال منبع‌باز برای توسعه ماد فابریک ارائه شده است. شما می‌توانید برای پروژه‌های فابریک خود آن را تغییر دهید.</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p id="footerText">ساخته شده با ❤️ برای <a href="https://github.com/simple-developer120/client-custom-logs" target="_blank">مشاهده در گیت‌هاب</a></p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
